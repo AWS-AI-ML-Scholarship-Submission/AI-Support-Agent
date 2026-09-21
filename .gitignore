@@ -1,2 +1,4 @@
 aws
 git remote add origin https://github.com/AWS-AI-ML-Scholarship-Submission/AI-Support-Agent.git.bedrock_agentcore
+.bedrock_agentcore/
+.bedrock_agentcore.yaml

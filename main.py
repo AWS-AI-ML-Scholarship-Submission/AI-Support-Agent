@@ -351,7 +351,7 @@ async def invoke(payload, context=None):
     except Exception as e:
         logger.exception("Agent invocation failed")
         return f"I'm sorry, something went wrong while processing your request: {e}"
-
+        
 # ── CLI entry point (do not modify) ──────────────────────────────────────────
 def main():
     """Run one invocation from the command line for local testing."""
