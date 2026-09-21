@@ -1,0 +1,15 @@
+First of all, I would like to apologize and ask for forgiveness for submitting this project late as there was a lot happening in my college life such as organizations, academics, and hackathons that upskill me.
+
+It was really fun completing this AI Agent Support Project. Although I was a beginner at using the AWS environment, to be honest I sought assistance from AI too on how to deploy resources and agents using the terminal only. I used terminal AWS commands to deploy all the resources because I couldn't access my AWS console for some reason.
+
+Design Decision: AgentCore Gateway with NONE Authorizer
+
+For this project, I chose to use the AgentCore Gateway with the NONE authorizer type to expose both the order-tracker API Gateway routes and the refund-processor Lambda as MCP tools. This decision simplified the authentication setup significantly, eliminating the need to manage JWT tokens or configure IAM signing in the agent code. The Gateway's MCP protocol abstraction also meant the agent could discover and invoke tools dynamically without hardcoding tool schemas. In a real production system, I would replace the NONE authorizer with CUSTOM_JWT tied to an identity provider, ensuring only authenticated users can invoke the Gateway endpoints.
+
+Challenge: Gateway Target Failures and OpenAPI Spec Parsing
+
+The most persistent challenge was getting the order-tracker Gateway target to reach READY status. It repeatedly failed with the error "attribute paths.'/orders/{order_id}'(get).responses is missing." The root cause was that the API Gateway methods were created without explicit method responses and integration responses defined. The AgentCore Gateway strictly requires response definitions when auto-generating an OpenAPI spec. The fix required running put-method-response and put-integration-response for all three routes before redeploying and recreating the Gateway target. This also wasn't the only challenge — setting up Python 3.13 with SQLite support on the Udacity VM required compiling from source, and the Udacity sandbox IAM permissions blocked OpenSearch Serverless, preventing Knowledge Base creation through the CLI entirely.
+
+Production Consideration: Cost and Latency at Scale
+
+In production, several optimizations would be critical. The Memory client's **get_memory_strategies** call currently runs on every agent invocation, adding unnecessary latency. Caching namespace mappings at startup would reduce this overhead. Additionally, each invocation chains multiple Bedrock model calls, Memory retrievals, a Gateway connection, and potentially a browser session — all of which incur costs. Implementing request throttling, caching frequent Knowledge Base queries, and setting session timeouts would be essential to control expenses at scale. Finally, the Knowledge Base should use a properly permissioned OpenSearch Serverless collection with least-privilege IAM policies rather than the broad development policies used here.
