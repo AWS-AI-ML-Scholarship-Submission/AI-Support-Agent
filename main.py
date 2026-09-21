@@ -48,7 +48,7 @@ os.environ["BYPASS_TOOL_CONSENT"] = "true"
 
 # ── TODO 2 — Configuration ────────────────────────────────────────────────────
 GATEWAY_URL = "https://customersupportgateway-nyfwwnndfw.gateway.bedrock-agentcore.us-east-1.amazonaws.com/mcp"
-KB_ID       = ""
+KB_ID       = "GNIL4WKOTQ"
 REGION      = "us-east-1"
 MEMORY_ID   = "CustomerSupportMemory-61zm5DFW3N"
 
@@ -364,6 +364,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # app.run()
+    app.run()
     # Uncomment the line below and comment app.run() for local CLI testing:
-    main()
+    # main()
