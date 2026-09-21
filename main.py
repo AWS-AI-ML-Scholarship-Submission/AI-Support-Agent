@@ -347,11 +347,10 @@ async def invoke(payload, context=None):
             result = await agent.invoke_async(user_input)
 
         return result.message["content"][0]["text"]
-
+   
     except Exception as e:
         logger.exception("Agent invocation failed")
         return f"I'm sorry, something went wrong while processing your request: {e}"
-
 
 # ── CLI entry point (do not modify) ──────────────────────────────────────────
 def main():
